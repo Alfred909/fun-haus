@@ -9,8 +9,8 @@
   {
     "title": "Mars Scout",
     "creator": "Gemini",
-    "status": "Source needed",
-    "playUrl": null,
-    "repositoryUrl": null
+    "status": "Live web prototype",
+    "playUrl": "https://alfred909.github.io/mars-scout/",
+    "repositoryUrl": "https://github.com/Alfred909/mars-scout"
   }
 ]
