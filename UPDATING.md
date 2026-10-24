@@ -19,12 +19,12 @@ If you are only changing a game, choose that game's repository. The museum conti
 
 | What you want to change | Repository | File or folder |
 | --- | --- | --- |
-| Museum layout, statues, movement or résumé | fun-haus | docs/index.html |
+| Portfolio homepage | fun-haus | docs/index.html and docs/portfolio.css |\n| Museum layout, movement, or embedded résumé | fun-haus | docs/museum.html |\n| Printable résumé | fun-haus | docs/resume.html |
 | Statue launch cards and game return bar | fun-haus | docs/museum-games.js |
 | Game addresses shown in the museum | fun-haus | docs/apps.json |
 | Separate project-list page | fun-haus | docs/projects.html |
 | Complete convention research site | fun-haus | docs/research/ |
-| PRGE documentary in the original lab | fun-haus | Embedded in docs/index.html |
+| PRGE documentary in the original lab | fun-haus | Embedded in docs/museum.html |
 | The Regulars game | the-regulars | docs/index.html |
 | Regulars character models | the-regulars | docs/models/ |
 | Mars Scout game | mars-scout | docs/index.html |
@@ -33,7 +33,7 @@ When Gemini gives you an updated Mars Scout HTML export, save it as docs/index.h
 
 The old Downloads and OneDrive source folders are separate copies. Saving there does not update GitHub Desktop's connected repository. Use Show in Explorer to locate the right working folder.
 
-The current museum still has its PRGE documentary and résumé embedded in index.html as well as separate copies. Changing the separate PRGE file updates the statue launcher; the original lab screen still uses the embedded copy. Ask for both copies to be synchronized when changing that documentary or résumé.
+The current museum still has its PRGE documentary and résumé embedded in museum.html as well as separate copies. Changing the separate PRGE file updates the statue launcher; the original lab screen still uses the embedded copy. Ask for both copies to be synchronized when changing that documentary or résumé.
 
 ## How the statues work
 
@@ -55,3 +55,6 @@ Do a visitor walkthrough in a normal desktop browser: enter the museum, find eac
 
 Then prepare the portfolio for employers: review the résumé, add a concise project description and your contribution for each exhibit, replace the abstract statue placeholders with recognizable project artwork, and provide an easy browse option for visitors on phones. A custom domain can follow once the content and navigation are settled.
 
+
+
+The main site address now opens the application portfolio. The walkable museum remains at museum.html. Update résumé changes in both resume.html and the museum’s embedded copies until these are consolidated. The confirmed completed qualification is a master’s degree in Themed Design in Architecture from the University of Florida.

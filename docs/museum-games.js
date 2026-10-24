@@ -5,7 +5,7 @@
   document.head.append(style);
   const menuButton=document.createElement('button');
   menuButton.className='museum-menu-button';menuButton.id='museum-games-menu';menuButton.textContent='Games menu';
-  document.body.append(menuButton);
+  document.body.append(menuButton);const portfolioLink=document.createElement('a');portfolioLink.href='index.html';portfolioLink.textContent='← Portfolio';portfolioLink.style.cssText='position:fixed;left:24px;bottom:24px;z-index:8;background:#f0eadb;color:#29362e;padding:10px 16px';document.body.append(portfolioLink);
   const shell=document.createElement('section');shell.className='museum-game-shell';shell.hidden=true;shell.setAttribute('aria-label','Playable museum exhibit');
   shell.innerHTML='<header class="museum-game-bar"><div><strong id="museum-game-title"></strong><small>Press Esc to release the mouse, then choose Museum menu.</small></div><nav aria-label="Game navigation"><a id="museum-open-tab" target="_blank" rel="noopener noreferrer">Open in new tab ↗</a><button id="museum-return-statue">Return to statue</button><button id="museum-return-menu">Museum menu</button></nav></header><iframe id="museum-game-frame" title="Museum game" sandbox="allow-scripts allow-same-origin allow-pointer-lock allow-forms allow-modals" allow="fullscreen"></iframe>';
   document.body.append(shell);

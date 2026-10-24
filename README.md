@@ -1,17 +1,16 @@
-# Fun Haus
+# Keith Borgholthaus / Fun Haus
 
-Live site: https://alfred909.github.io/fun-haus/
+Application portfolio: https://alfred909.github.io/fun-haus/
 
-Walkable portfolio and museum recovered from the October 20 Fun Haus v08. Includes the résumé, PRGE documentary, embedded event photographs, and bundled Three.js with its MIT license. The welcome panel links to a project hub; docs/apps.json controls the separate app links.
+Walkable museum: https://alfred909.github.io/fun-haus/museum.html
 
-## Update the site
+Résumé: https://alfred909.github.io/fun-haus/resume.html
 
-GitHub Pages publishes main /docs. Edit files in docs and commit to main; GitHub automatically deploys the changes. Check the Pages workflow in Actions for success. Use branches and pull requests for larger changes. Keep this repository separate from the other Fun Haus apps.
+The main page provides quick access to convention research, Roman Soldiers themed learning, playable AI-assisted prototypes, and the résumé. The museum remains an optional exploration mode.
 
-For local development, serve docs with a local HTTP server. Keep credentials outside the repository. No license is granted for original creative work; retained third-party licenses apply to their respective components.
+## Updating
 
-Netlify is an optional alternative: import this repository, leave the build command empty, and publish docs. netlify.toml supplies that directory. Netlify is not connected for this project.
+GitHub Pages publishes main /docs. Use GitHub Desktop: Fetch/Pull, Show in Explorer, edit docs, review changes, Commit to main, Push origin. See UPDATING.md for file locations. Homepage: docs/index.html and docs/portfolio.css. Museum: docs/museum.html and docs/museum-games.js. Printable résumé: docs/resume.html.
 
-## Recovery and verification
+The completed qualification was confirmed by Keith as a master’s degree in Themed Design in Architecture from the University of Florida. Original source files and Git history are preserved. The games remain in separate repositories. Third-party components retain their own licenses; no license is granted for original creative work.
 
-Original local source files were preserved. Script syntax, JSON and local references passed checks. The deployed museum renders and its Read the board interaction works. The résumé remains the recovered draft; review it before job applications. Full gameplay and all interactions have not been exhaustively tested.
