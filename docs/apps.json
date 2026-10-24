@@ -2,9 +2,9 @@
   {
     "title": "The Regulars",
     "creator": "Claude",
-    "status": "Source recovered; publishing pending",
-    "playUrl": null,
-    "repositoryUrl": null
+    "status": "Live web prototype",
+    "playUrl": "https://alfred909.github.io/the-regulars/",
+    "repositoryUrl": "https://github.com/Alfred909/the-regulars"
   },
   {
     "title": "Mars Scout",
