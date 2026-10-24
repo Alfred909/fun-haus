@@ -1,16 +1,17 @@
-# fun-haus
+# Fun Haus
 
-Recovered prototype prepared October 24, 2026. Original source files are untouched.
+Live site: https://alfred909.github.io/fun-haus/
 
-## Publishing
+Walkable portfolio and museum recovered from the October 20 Fun Haus v08. Includes the résumé, PRGE documentary, embedded event photographs, and bundled Three.js with its MIT license. The welcome panel links to a project hub; docs/apps.json controls the separate app links.
 
-Create a separate GitHub repository named fun-haus under Alfred909. Upload this folder contents retaining docs. In Settings > Pages select Deploy from a branch, main, /docs, Save. Later commits to main automatically publish updates.
+## Update the site
 
-Alternatively import into Netlify: no build command, publish directory docs. netlify.toml supplies the directory.
+GitHub Pages publishes main /docs. Edit files in docs and commit to main; GitHub automatically deploys the changes. Check the Pages workflow in Actions for success. Use branches and pull requests for larger changes. Keep this repository separate from the other Fun Haus apps.
 
-## Updates
+For local development, serve docs with a local HTTP server. Keep credentials outside the repository. No license is granted for original creative work; retained third-party licenses apply to their respective components.
 
-Edit docs, preview with a local HTTP server, commit and push. Never force-push over existing work. Do not upload credentials. No license is granted for original creative work; retained third-party licenses apply to their own components.
+Netlify is an optional alternative: import this repository, leave the build command empty, and publish docs. netlify.toml supplies that directory. Netlify is not connected for this project.
 
-Recovered October 20 v08: museum, PRGE documentary/photos, résumé and bundled Three.js. The welcome panel gains a link to projects.html. Update apps.json only with verified live URLs. The résumé is the recovered draft; review it before job applications.
+## Recovery and verification
 
+Original local source files were preserved. Script syntax, JSON and local references passed checks. The deployed museum renders and its Read the board interaction works. The résumé remains the recovered draft; review it before job applications. Full gameplay and all interactions have not been exhaustively tested.
