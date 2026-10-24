@@ -23,7 +23,8 @@ If you are only changing a game, choose that game's repository. The museum conti
 | Statue launch cards and game return bar | fun-haus | docs/museum-games.js |
 | Game addresses shown in the museum | fun-haus | docs/apps.json |
 | Separate project-list page | fun-haus | docs/projects.html |
-| PRGE documentary | fun-haus | docs/programs/prge.html |
+| Complete convention research site | fun-haus | docs/research/ |
+| PRGE documentary in the original lab | fun-haus | Embedded in docs/index.html |
 | The Regulars game | the-regulars | docs/index.html |
 | Regulars character models | the-regulars | docs/models/ |
 | Mars Scout game | mars-scout | docs/index.html |
@@ -36,7 +37,7 @@ The current museum still has its PRGE documentary and résumé embedded in index
 
 ## How the statues work
 
-Left: The Regulars. Middle: Mars Scout. Right: PRGE 2019.
+Left: The Regulars. Middle: Mars Scout. Right: Beyond the Building convention research.
 
 Aim at a statue and click, or move near it and press E. Choose Play in the preview. The game opens inside the museum with a permanent navigation bar. Press Esc to release the mouse, then choose Museum menu or Return to statue. The museum keeps your position because it stays open behind the game. Return unloads the game, so unsaved game progress is not retained.
 
@@ -53,3 +54,4 @@ Games menu also opens the same exhibits without walking. Visit the statues moves
 Do a visitor walkthrough in a normal desktop browser: enter the museum, find each statue, play, and return. Check mouse capture, movement, sound, loading and the return buttons in Chrome and Edge.
 
 Then prepare the portfolio for employers: review the résumé, add a concise project description and your contribution for each exhibit, replace the abstract statue placeholders with recognizable project artwork, and provide an easy browse option for visitors on phones. A custom domain can follow once the content and navigation are settled.
+

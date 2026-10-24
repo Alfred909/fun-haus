@@ -15,7 +15,7 @@
   const definitions=[
     {id:'statueRegulars',title:'The Regulars',creator:'Claude',description:'Explore Gai Fong Street in an action game prototype.',x:-6},
     {id:'statueMars',title:'Mars Scout',creator:'Gemini',description:'Build a Mars outpost and manage shelter, oxygen and supplies.',x:0},
-    {id:'statuePRGE',title:'PRGE 2019',creator:'Fun Haus research',description:'Explore the life of a temporary arcade through the original interactive documentary.',x:6}
+    {id:'statuePRGE',title:'Beyond the Building',creator:'Convention research',description:'Explore the full convention research website: maps, photographs, evidence, and the PRGE documentary.',x:6}
   ];
   function populate(){
     for(const d of definitions){
@@ -48,7 +48,7 @@
     $('detail').style.display='none';$('welcome').style.display='none';$('prompt').style.display='none';
     if(document.pointerLockElement)document.exitPointerLock();
     document.getElementById('museum-game-title').textContent=d.title;
-    const url=id==='statuePRGE'?new URL('programs/prge.html',location.href).href:app.playUrl;
+    const url=id==='statuePRGE'?new URL('research/index.html',location.href).href:app.playUrl;
     document.getElementById('museum-open-tab').href=url;
     frame.title=d.title+' — playable exhibit';
     shell.hidden=false;menuButton.hidden=true;frame.src=url;
@@ -77,5 +77,33 @@
   fetch('apps.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw Error();return r.json()}).then(data=>{games=data;populate()}).catch(()=>{
     summaries.games.body+='<p role="alert">Game links could not load. Reload the page to try again. The documentary remains available.</p>';
   });
-  summaries.hall={title:'Display Hall / playable exhibits',tag:'03 / choose a statue',body:'<p>Each statue opens an interactive exhibit. Aim at it and click, or walk close and press E.</p><p>The Regulars is on the left, Mars Scout in the middle, and PRGE 2019 on the right.</p><button onclick="showMuseumGames()">Open Games menu</button>'};
+  summaries.hall={title:'Display Hall / playable exhibits',tag:'03 / choose a statue',body:'<p>Each statue opens an interactive exhibit. Aim at it and click, or walk close and press E.</p><p>The Regulars is on the left, Mars Scout in the middle, and Beyond the Building convention research on the right.</p><button onclick="showMuseumGames()">Open Games menu</button>'};
+
+function exhibitMesh(id,geometry,material,x,y,z){const mesh=new THREE.Mesh(geometry,material);mesh.position.set(x,y+.7,z-12);mesh.userData.subject=id;scene.add(mesh);return mesh}
+function replacePlaceholder(id){for(const mesh of [...scene.children])if(mesh.userData.subject===id&&mesh.position.y===1.4){scene.remove(mesh);mesh.geometry.dispose();mesh.material.dispose()}}
+function installTent(){
+ const id='statueMars';replacePlaceholder(id);
+ exhibitMesh(id,new THREE.SphereGeometry(.8,16,12,0,Math.PI*2,0,Math.PI/2),new THREE.MeshStandardMaterial({color:0x10b981,roughness:.3,metalness:.2}),0,0,0);
+ const ring=exhibitMesh(id,new THREE.TorusGeometry(.78,.02,8,24),new THREE.MeshBasicMaterial({color:0x34d399}),0,.1,0);ring.rotation.x=Math.PI/2;
+}
+function installConventionHall(){
+ const id='statuePRGE';replacePlaceholder(id);
+ const wall=new THREE.MeshStandardMaterial({color:'#e9e2cf',roughness:.85}),roof=new THREE.MeshStandardMaterial({color:'#677d80',roughness:.7,side:THREE.DoubleSide});
+ const box=(w,h,d,x,y,z,mat)=>exhibitMesh(id,new THREE.BoxGeometry(w,h,d),mat,x+6,y,z);
+ box(1.6,.08,1.25,0,.04,0,wall);box(1.6,.48,.06,0,.32,-.6,wall);
+ for(const side of [-1,1])box(.06,.48,1.25,side*.77,.32,0,wall);
+ box(1.7,.08,1.35,0,1.18,0,roof);
+ for(const x of [-.45,0,.45])for(const z of [-.3,.22]){box(.22,.24,.21,x,.2,z,new THREE.MeshStandardMaterial({color:x===0?'#b77450':'#397999'}));box(.18,.04,.04,x,.33,z+.07,new THREE.MeshBasicMaterial({color:'#e6ed9b'}))}
+ for(const x of [-.25,.25])box(.025,.012,1.1,x,.09,0,new THREE.MeshBasicMaterial({color:'#b77450'}));
+}
+async function installYaki(){
+ const response=await fetch('models/yaki.bin');if(!response.ok)throw Error('Yaki model unavailable');
+ const data=new Float32Array(await response.arrayBuffer());if(!data.length||data.length%8)throw Error('Invalid Yaki model');
+ const buffer=new THREE.InterleavedBuffer(data,8),geo=new THREE.BufferGeometry();
+ geo.setAttribute('position',new THREE.InterleavedBufferAttribute(buffer,3,0));geo.setAttribute('normal',new THREE.InterleavedBufferAttribute(buffer,3,3));geo.setAttribute('uv',new THREE.InterleavedBufferAttribute(buffer,2,6));geo.computeBoundingBox();geo.computeBoundingSphere();
+ const tex=await new THREE.TextureLoader().loadAsync('models/yaki-texture.jpg');tex.colorSpace=THREE.SRGBColorSpace;
+ replacePlaceholder('statueRegulars');exhibitMesh('statueRegulars',geo,new THREE.MeshStandardMaterial({map:tex,roughness:.8}),-6,0,0);
+}
+if(ready){installTent();installConventionHall();installYaki().catch(error=>{console.warn(error.message);summaries.statueRegulars.body+='<p class="note">Character sculpture could not load. The game is still available.</p>'})}
+
 })();

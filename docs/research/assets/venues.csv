@@ -1,0 +1,26 @@
+﻿Venue_ID,Venue_Name,Address,Latitude,Longitude,Coordinate_Status,Review_Note
+V001,Seattle Convention Center,"705 Pike St / 900 Pine St, Seattle",,,Unverified,Multiple buildings in source; historical anchor requires review.
+V002,Sheraton Grand Seattle,"1400 6th Ave, Seattle",,,Unverified,Address copied from research workbook; not independently verified.
+V003,Motif Seattle / Hilton Motif,"1415 5th Ave, Seattle",,,Unverified,Address copied from research workbook; not independently verified.
+V004,Grand Hyatt Seattle,"721 Pine St, Seattle",,,Unverified,Address copied from research workbook; not independently verified.
+V005,Renaissance Seattle Hotel,"515 Madison St, Seattle",,,Unverified,Address copied from research workbook; not independently verified.
+V006,The Showbox,"1426 1st Ave, Seattle",,,Unverified,Address copied from research workbook; not independently verified.
+V007,Hard Rock Cafe Seattle,"116 Pike St, Seattle",,,Unverified,Address copied from research workbook; not independently verified.
+V008,Melrose Market Studios,"1532 Minor Ave, Seattle",,,Unverified,Address copied from research workbook; not independently verified.
+V009,1927 Events,"1927 3rd Ave, Seattle",,,Unverified,Address copied from research workbook; not independently verified.
+V010,Columbia Center,"701 5th Ave, Seattle",,,Unverified,Address copied from research workbook; not independently verified.
+V011,Hotel Ändra,"2000 4th Ave, Seattle",,,Unverified,Address copied from research workbook; not independently verified.
+V012,Block 41,"115 Bell St, Seattle",,,Unverified,Address copied from research workbook; not independently verified.
+V013,Seattle Interactive Media-Lab,"3131 Western Ave, Suite 421, Seattle",,,Unverified,Address copied from research workbook; not independently verified.
+V014,GameWorks Seattle,"1511 7th Ave, Seattle",,,Unverified,Address copied from research workbook; not independently verified.
+V015,The Diller Room,"1224 1st Ave, Seattle",,,Unverified,Address copied from research workbook; not independently verified.
+V016,W Seattle,,,,Unverified,Address needed; retain original venue wording for review.
+V017,Raygun Lounge,,,,Unverified,Address needed; retain original venue wording for review.
+V018,Amazon Meeting Center,,,,Unverified,Address needed; retain original venue wording for review.
+V019,Emerald City Trapeze,,,,Unverified,Address needed; retain original venue wording for review.
+V020,"Microsoft Visitors Center, Redmond",,,,Unverified,Address needed; retain original venue wording for review.
+V021,Fred Wildlife Refuge,,,,Unverified,Address needed; retain original venue wording for review.
+V022,"Microsoft Building 33, Redmond",,,,Unverified,Address needed; retain original venue wording for review.
+V023,Near Seattle Convention Center,,,,Unverified,Address needed; retain original venue wording for review.
+V024,1521 2nd Ave R1,,,,Unverified,Address needed; retain original venue wording for review.
+V025,"Showbox SoDo, 1700 1st Ave S",,,,Unverified,Address needed; retain original venue wording for review.
