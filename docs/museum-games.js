@@ -14,6 +14,7 @@
   const escapeText=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const definitions=[
     {id:'arcadeNightShift',title:'Night Shift',creator:'Keith Borgholthaus · ChatGPT-assisted prototype',description:'Run a ghost-catching business: drive through the city, explore haunted buildings, coordinate your crew and upgrade your equipment.',x:-9},
+    {id:'movingPool',title:'Moving Pool Intervention',creator:'Simulation Lab / guest behavior',description:'A moving family pool and circular river with finite tubes. Families collect every tube they want before leaving.',local:'programs/moving_pool_intervention_prototype.html',x:7.7},
     {id:'statueRegulars',title:'The Regulars',creator:'Claude',description:'Explore Gai Fong Street in an action game prototype.',x:-6},
     {id:'statueMars',title:'Mars Scout',creator:'Gemini',description:'Build a Mars outpost and manage shelter, oxygen and supplies.',x:0},
     {id:'statuePRGE',title:'Beyond the Building',creator:'Convention research',description:'Explore the full convention research website: maps, photographs, evidence, and the PRGE documentary.',x:6}
@@ -21,10 +22,10 @@
   function populate(){
     for(const d of definitions){
       const app=games.find(a=>a.title===d.title);
-      const available=d.id==='statuePRGE'||Boolean(app&&validURL(app.playUrl));
-      summaries[d.id]={title:d.title,tag:'Display hall / interactive exhibit',body:'<p>'+escapeText(d.description)+'</p><p class="note">'+escapeText(d.creator)+'</p><div class="launch-card"><p>Play this exhibit? Your place in the museum will be kept.</p><button data-play-exhibit="'+d.id+'"'+(available?'':' disabled')+'>'+(available?'Play '+escapeText(d.title)+' ▶':'Game link unavailable')+'</button></div><p class="game-menu-note">The game opens with a return bar. Esc releases the mouse; Museum menu returns to the game list.</p>'};
+      const available=Boolean(d.local)||d.id==='statuePRGE'||Boolean(app&&validURL(app.playUrl));
+      summaries[d.id]={title:d.title,tag:d.local?'Simulation Lab / cocktail table exhibit':'Display hall / interactive exhibit',body:'<p>'+escapeText(d.description)+'</p><p class="note">'+escapeText(d.creator)+'</p><div class="launch-card"><p>Play this exhibit? Your place in the museum will be kept.</p><button data-play-exhibit="'+d.id+'"'+(available?'':' disabled')+'>'+(available?'Play '+escapeText(d.title)+' ▶':'Game link unavailable')+'</button></div><p class="game-menu-note">The game opens with a return bar. Esc releases the mouse; Museum menu returns to the game list.</p>'};
     }
-    summaries.games={title:'Choose an exhibit',tag:'Fun Haus / games menu',body:'<p>Choose a game here, or visit its exhibit in the Display Hall.</p><div class="game-options">'+definitions.map(d=>'<button data-preview-exhibit="'+d.id+'">'+escapeText(d.title)+'<small>'+escapeText(d.description)+'</small></button>').join('')+'</div><p><button id="visit-game-statues">Visit the Display Hall ↗</button></p><p class="note">Desktop keyboard and mouse recommended. Open in new tab is available if your browser limits a game inside the museum.</p>'};
+    summaries.games={title:'Choose an exhibit',tag:'Fun Haus / games menu',body:'<p>Visit the moving-pool table in the Simulation Lab, or the game statues in the Display Hall.</p><div class="game-options">'+definitions.map(d=>'<button data-preview-exhibit="'+d.id+'">'+escapeText(d.title)+'<small>'+escapeText(d.description)+'</small></button>').join('')+'</div><p><button id="visit-game-statues">Visit the Display Hall ↗</button></p><p class="note">Desktop keyboard and mouse recommended. Open in new tab is available if your browser limits a game inside the museum.</p>'};
   }
   function validURL(value){try{const u=new URL(value);return u.protocol==='https:'&&u.origin===location.origin}catch{return false}}
   function showMenu(){keys.clear();showDetail('games')}
@@ -45,13 +46,13 @@
   function startExhibit(id){
     const d=definitions.find(x=>x.id===id);if(!d)return;
     const app=games.find(a=>a.title===d.title);
-    if(id!=='statuePRGE'&&(!app||!validURL(app.playUrl)))return;
+    if(!d.local&&id!=='statuePRGE'&&(!app||!validURL(app.playUrl)))return;
     selected=d;programOpen=true;keys.clear();
     $('detail').style.display='none';$('welcome').style.display='none';$('prompt').style.display='none';
     if(document.pointerLockElement)document.exitPointerLock();
     document.getElementById('museum-game-title').textContent=d.title;
-    document.getElementById('museum-return-statue').textContent=id==='arcadeNightShift'?'Return to arcade cabinet':'Return to exhibit';
-    const url=id==='statuePRGE'?new URL('research/index.html',location.href).href:app.playUrl;
+    document.getElementById('museum-return-statue').textContent=d.local?'Return to table':id==='arcadeNightShift'?'Return to arcade cabinet':'Return to exhibit';
+    const url=d.local?new URL(d.local,location.href).href:id==='statuePRGE'?new URL('research/index.html',location.href).href:app.playUrl;
     document.getElementById('museum-open-tab').href=url;
     frame.title=d.title+' — playable exhibit';
     shell.hidden=false;menuButton.hidden=true;frame.src=url;
@@ -140,6 +141,24 @@ async function installYaki(){
  const tex=await new THREE.TextureLoader().loadAsync('models/yaki-texture.jpg');tex.colorSpace=THREE.SRGBColorSpace;
  replacePlaceholder('statueRegulars');exhibitMesh('statueRegulars',geo,new THREE.MeshStandardMaterial({map:tex,roughness:.8}),-6,0,0);
 }
-if(ready){const titleScript=document.createElement('script');titleScript.src='games/night-shift/title-screen.js';titleScript.onload=installNightShiftArcade;titleScript.onerror=()=>console.warn('Night Shift cabinet artwork could not load; use Games menu to play.');document.head.append(titleScript);installTent();installConventionHall();installYaki().catch(error=>{console.warn(error.message);summaries.statueRegulars.body+='<p class="note">Character sculpture could not load. The game is still available.</p>'})}
+
+function installMovingPool(){
+ const id='movingPool';
+ for(const mesh of [...scene.children])if(mesh.position.x===7.7&&mesh.position.z===0){scene.remove(mesh);mesh.geometry?.dispose();mesh.material?.dispose()}
+ const part=(w,h,d,x,y,z,color)=>{const m=box(w,h,d,x,y,z,color);m.userData.subject=id;return m};
+ part(2.7,.76,1.7,7.7,.48,0,'#526c66');
+ for(const x of [6.65,8.75])for(const z of [-.6,.6])part(.12,.2,.12,x,.1,z,'#324656');
+ part(3.05,.12,2.05,7.7,.94,0,'#806348');part(2.83,.04,1.83,7.7,1.02,0,'#263d37');
+ const screen=new THREE.Mesh(new THREE.PlaneGeometry(2.6,1.625),new THREE.MeshBasicMaterial({color:'#eef7fb'}));
+ screen.rotation.x=-Math.PI/2;screen.position.set(7.7,1.047,0);screen.userData.subject=id;scene.add(screen);
+ new THREE.TextureLoader().load('programs/moving-pool-opening.png',t=>{t.colorSpace=THREE.SRGBColorSpace;screen.material.map=t;screen.material.needsUpdate=true});
+ for(const z of [-1.15,1.15]){part(1.15,.08,.24,7.7,.88,z,'#324656');for(const x of [7.45,7.85]){const b=new THREE.Mesh(new THREE.CylinderGeometry(.045,.045,.025,16),new THREE.MeshBasicMaterial({color:'#e6ed9b'}));b.position.set(x,.935,z);b.userData.subject=id;scene.add(b)}}
+ sign('MOVING POOL / TUBE COLLECTION',7.7,.57,.861,0,2.45,.28);
+ sign('SIMULATION 02 / MOVING POOL',7.7,2.3,-7.82,0,3.8);
+ targets.push({id,x:7.7,z:1.5,label:'Moving Pool · play the table simulation'});
+ summaries.lab.body+='<p><button data-preview-exhibit="movingPool">Moving Pool Intervention · cocktail table ↗</button></p>';
+}
+
+if(ready){installMovingPool();const titleScript=document.createElement('script');titleScript.src='games/night-shift/title-screen.js';titleScript.onload=installNightShiftArcade;titleScript.onerror=()=>console.warn('Night Shift cabinet artwork could not load; use Games menu to play.');document.head.append(titleScript);installTent();installConventionHall();installYaki().catch(error=>{console.warn(error.message);summaries.statueRegulars.body+='<p class="note">Character sculpture could not load. The game is still available.</p>'})}
 
 })();
