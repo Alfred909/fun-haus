@@ -15,6 +15,7 @@
   const definitions=[
     {id:'arcadeNightShift',title:'Night Shift',creator:'Keith Borgholthaus · ChatGPT-assisted prototype',description:'Run a ghost-catching business: drive through the city, explore haunted buildings, coordinate your crew and upgrade your equipment.',x:-9},
     {id:'movingPool',title:'Moving Pool Intervention',creator:'Simulation Lab / guest behavior',description:'A moving family pool and circular river with finite tubes. Families collect every tube they want before leaving.',local:'programs/moving_pool_intervention_prototype.html',x:7.7},
+    {id:'livingPond',title:'Umwelt · The Living Pond',creator:'Simulation Lab / ecology & perception',description:'Observe a living pond, experience an organism’s limited senses, or inhabit a creature. Explore how food, water and predators affect the ecology.',local:'programs/living-pond/index.html',x:7.7},
     {id:'statueRegulars',title:'The Regulars',creator:'Claude',description:'Explore Gai Fong Street in an action game prototype.',x:-6},
     {id:'statueMars',title:'Mars Scout',creator:'Gemini',description:'Build a Mars outpost and manage shelter, oxygen and supplies.',x:0},
     {id:'statuePRGE',title:'Beyond the Building',creator:'Convention research',description:'Explore the full convention research website: maps, photographs, evidence, and the PRGE documentary.',x:6}
@@ -25,7 +26,7 @@
       const available=Boolean(d.local)||d.id==='statuePRGE'||Boolean(app&&validURL(app.playUrl));
       summaries[d.id]={title:d.title,tag:d.local?'Simulation Lab / cocktail table exhibit':'Display hall / interactive exhibit',body:'<p>'+escapeText(d.description)+'</p><p class="note">'+escapeText(d.creator)+'</p><div class="launch-card"><p>Play this exhibit? Your place in the museum will be kept.</p><button data-play-exhibit="'+d.id+'"'+(available?'':' disabled')+'>'+(available?'Play '+escapeText(d.title)+' ▶':'Game link unavailable')+'</button></div><p class="game-menu-note">The game opens with a return bar. Esc releases the mouse; Museum menu returns to the game list.</p>'};
     }
-    summaries.games={title:'Choose an exhibit',tag:'Fun Haus / games menu',body:'<p>Visit the moving-pool table in the Simulation Lab, or the game statues in the Display Hall.</p><div class="game-options">'+definitions.map(d=>'<button data-preview-exhibit="'+d.id+'">'+escapeText(d.title)+'<small>'+escapeText(d.description)+'</small></button>').join('')+'</div><p><button id="visit-game-statues">Visit the Display Hall ↗</button></p><p class="note">Desktop keyboard and mouse recommended. Open in new tab is available if your browser limits a game inside the museum.</p>'};
+    summaries.games={title:'Choose an exhibit',tag:'Fun Haus / games menu',body:'<p>Visit the moving-pool and living-pond tables in the Simulation Lab, or the arcade cabinet and game statues in the Display Hall.</p><div class="game-options">'+definitions.map(d=>'<button data-preview-exhibit="'+d.id+'">'+escapeText(d.title)+'<small>'+escapeText(d.description)+'</small></button>').join('')+'</div><p><button id="visit-game-statues">Visit the Display Hall ↗</button></p><p class="note">Desktop keyboard and mouse recommended. Open in new tab is available if your browser limits a game inside the museum.</p>'};
   }
   function validURL(value){try{const u=new URL(value);return u.protocol==='https:'&&u.origin===location.origin}catch{return false}}
   function showMenu(){keys.clear();showDetail('games')}
@@ -81,12 +82,13 @@
   fetch('apps.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw Error();return r.json()}).then(data=>{games=data;populate()}).catch(()=>{
     summaries.games.body+='<p role="alert">Game links could not load. Reload the page to try again. The documentary remains available.</p>';
   });
-  summaries.hall={title:'Display Hall / playable exhibits',tag:'03 / playable exhibits',body:'<p>Each display opens an interactive exhibit. Aim at it and click, or walk close and press E.</p><p>The Night Shift stand-up arcade cabinet is at the left end of the hall. The Regulars, Mars Scout and Beyond the Building occupy the three plinths.</p><button onclick="showMuseumGames()">Open Games menu</button>'};
+  summaries.hall={title:'Display Hall / playable exhibits',tag:'03 / playable exhibits',body:'<p>Each display opens an interactive exhibit. Aim at it and click, or walk close and press E.</p><p>The Night Shift stand-up arcade cabinet sits against the back wall at the left end of the hall, with its controls facing into the room. The Regulars, Mars Scout and Beyond the Building occupy the three plinths.</p><button onclick="showMuseumGames()">Open Games menu</button>'};
 
 function exhibitMesh(id,geometry,material,x,y,z){const mesh=new THREE.Mesh(geometry,material);mesh.position.set(x,y+.7,z-12);mesh.userData.subject=id;scene.add(mesh);return mesh}
 function replacePlaceholder(id){for(const mesh of [...scene.children])if(mesh.userData.subject===id&&mesh.position.y===1.4){scene.remove(mesh);mesh.geometry.dispose();mesh.material.dispose()}}
 function installNightShiftArcade(){
- const id='arcadeNightShift',cx=-9,cz=-11.7;
+ // Upright cabinets sit against the back wall, facing the gallery (+Z).
+ const id='arcadeNightShift',cx=-9,cz=-15.2;
  const dark=new THREE.MeshStandardMaterial({color:'#14282c',roughness:.55,metalness:.18});
  const trim=new THREE.MeshStandardMaterial({color:'#72b790',roughness:.4,metalness:.2});
  const black=new THREE.MeshStandardMaterial({color:'#090f15',roughness:.65});
@@ -159,6 +161,27 @@ function installMovingPool(){
  summaries.lab.body+='<p><button data-preview-exhibit="movingPool">Moving Pool Intervention · cocktail table ↗</button></p>';
 }
 
+
+function installLivingPond(){
+ const id='livingPond',cx=7.7,cz=-4;
+ // Match the moving-pool cocktail table, with a clear aisle between the two exhibits.
+ const part=(w,h,d,x,y,z,color)=>{const m=box(w,h,d,cx+x,y,cz+z,color);m.userData.subject=id;return m};
+ part(2.7,.76,1.7,0,.48,0,'#526c66');
+ for(const x of [-1.05,1.05])for(const z of [-.6,.6])part(.12,.2,.12,x,.1,z,'#324656');
+ part(3.05,.12,2.05,0,.94,0,'#806348');part(2.83,.04,1.83,0,1.02,0,'#263d37');
+ const screen=new THREE.Mesh(new THREE.PlaneGeometry(2.6,1.625),new THREE.MeshBasicMaterial({color:'#123337',toneMapped:false}));
+ screen.rotation.x=-Math.PI/2;screen.position.set(cx,1.047,cz);screen.userData.subject=id;scene.add(screen);
+ new THREE.TextureLoader().load('programs/living-pond/opening.png',t=>{t.colorSpace=THREE.SRGBColorSpace;screen.material.map=t;screen.material.needsUpdate=true});
+ for(const z of [-1.15,1.15]){part(1.15,.08,.24,0,.88,z,'#324656');for(const [x,color] of [[-.25,'#92d96d'],[.15,'#64dfcf']]){const b=new THREE.Mesh(new THREE.CylinderGeometry(.045,.045,.025,16),new THREE.MeshBasicMaterial({color}));b.position.set(cx+x,.935,cz+z);b.userData.subject=id;scene.add(b)}}
+ sign('UMWELT / THE LIVING POND',cx,.57,cz+.861,0,2.45,.28);
+ sign('OBSERVE / SENSE / INHABIT',cx,.57,cz-.861,Math.PI,2.45,.28);
+ // Include the projecting controls so visitors cannot walk through the cabinet.
+ walls.push({minX:cx-1.525,maxX:cx+1.525,minZ:cz-1.27,maxZ:cz+1.27});
+ targets.push({id,x:cx,z:cz+1.6,label:'Umwelt · play the living ecology table'});
+ targets.push({id,x:cx,z:cz-1.6,label:'Umwelt · play the living ecology table'});
+ summaries.lab.body+='<p><button data-preview-exhibit="livingPond">Umwelt · living ecology cocktail table ↗</button></p>';
+}
+
 function installPlayroomPoster(){
  const id='playroomStory',x=-11.72,y=1.9,z=-4.25;
  const art=texture((g,w,h)=>{
@@ -178,6 +201,6 @@ function installPlayroomPoster(){
  summaries[id]={title:'From Painting to Playroom',tag:'Design Office / process exhibit',body:'<img class="project-image" src="projects/playroom/assets/04-photo-concept.webp" alt="Merged indoor playground concept"><p>Three painted playground views became one imagined building. Follow the Marble reconstruction, the CAD attempts, what failed, and what the next version needs.</p><p><a href="projects/playroom/index.html">Open the full case study ↗</a></p>'};
 }
 
-if(ready){installMovingPool();installPlayroomPoster();const titleScript=document.createElement('script');titleScript.src='games/night-shift/title-screen.js';titleScript.onload=installNightShiftArcade;titleScript.onerror=()=>console.warn('Night Shift cabinet artwork could not load; use Games menu to play.');document.head.append(titleScript);installTent();installConventionHall();installYaki().catch(error=>{console.warn(error.message);summaries.statueRegulars.body+='<p class="note">Character sculpture could not load. The game is still available.</p>'})}
+if(ready){installMovingPool();installLivingPond();installPlayroomPoster();const titleScript=document.createElement('script');titleScript.src='games/night-shift/title-screen.js';titleScript.onload=installNightShiftArcade;titleScript.onerror=()=>console.warn('Night Shift cabinet artwork could not load; use Games menu to play.');document.head.append(titleScript);installTent();installConventionHall();installYaki().catch(error=>{console.warn(error.message);summaries.statueRegulars.body+='<p class="note">Character sculpture could not load. The game is still available.</p>'})}
 
 })();
