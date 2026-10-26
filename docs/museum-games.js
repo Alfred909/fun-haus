@@ -159,6 +159,25 @@ function installMovingPool(){
  summaries.lab.body+='<p><button data-preview-exhibit="movingPool">Moving Pool Intervention · cocktail table ↗</button></p>';
 }
 
-if(ready){installMovingPool();const titleScript=document.createElement('script');titleScript.src='games/night-shift/title-screen.js';titleScript.onload=installNightShiftArcade;titleScript.onerror=()=>console.warn('Night Shift cabinet artwork could not load; use Games menu to play.');document.head.append(titleScript);installTent();installConventionHall();installYaki().catch(error=>{console.warn(error.message);summaries.statueRegulars.body+='<p class="note">Character sculpture could not load. The game is still available.</p>'})}
+function installPlayroomPoster(){
+ const id='playroomStory',x=-11.72,y=1.9,z=-4.25;
+ const art=texture((g,w,h)=>{
+   const grad=g.createLinearGradient(0,0,0,h);grad.addColorStop(0,'#177b7f');grad.addColorStop(1,'#173b3b');g.fillStyle=grad;g.fillRect(0,0,w,h);
+   g.fillStyle='#f8edda';g.beginPath();g.arc(260,360,220,Math.PI,0);g.lineTo(480,610);g.lineTo(40,610);g.closePath();g.fill();
+   g.fillStyle='#c85f49';g.beginPath();g.arc(690,400,260,Math.PI,0);g.lineTo(950,650);g.lineTo(430,650);g.closePath();g.fill();
+   g.fillStyle='#e2a43c';g.beginPath();g.arc(720,355,45,0,Math.PI*2);g.fill();
+   g.strokeStyle='#fff9ee';g.lineWidth=16;g.beginPath();g.moveTo(55,690);g.bezierCurveTo(330,560,560,780,970,585);g.stroke();
+   g.fillStyle='#fff9ee';g.font='900 56px sans-serif';g.fillText('FROM PAINTING',60,110);g.fillText('TO PLAYROOM',60,176);
+   g.fillStyle='#f3ca72';g.font='700 25px sans-serif';g.fillText('ONE ROOM · MANY IMAGES · SEVERAL ATTEMPTS',62,225);
+   g.fillStyle='#fff9ee';g.font='23px sans-serif';g.fillText('A DESIGN PROCESS EXHIBIT',62,h-56);
+ },1024,768);
+ const frame=box(.14,2.65,3.5,x,y,z,'#263d37');frame.userData.subject=id;
+ const poster=new THREE.Mesh(new THREE.PlaneGeometry(3.25,2.4),new THREE.MeshBasicMaterial({map:art,toneMapped:false}));
+ poster.position.set(x+.075,y,z);poster.rotation.y=Math.PI/2;poster.userData.subject=id;scene.add(poster);
+ targets.push({id,x:-10.45,z,label:'From Painting to Playroom · process exhibit'});
+ summaries[id]={title:'From Painting to Playroom',tag:'Design Office / process exhibit',body:'<img class="project-image" src="projects/playroom/assets/04-photo-concept.webp" alt="Merged indoor playground concept"><p>Three painted playground views became one imagined building. Follow the Marble reconstruction, the CAD attempts, what failed, and what the next version needs.</p><p><a href="projects/playroom/index.html">Open the full case study ↗</a></p>'};
+}
+
+if(ready){installMovingPool();installPlayroomPoster();const titleScript=document.createElement('script');titleScript.src='games/night-shift/title-screen.js';titleScript.onload=installNightShiftArcade;titleScript.onerror=()=>console.warn('Night Shift cabinet artwork could not load; use Games menu to play.');document.head.append(titleScript);installTent();installConventionHall();installYaki().catch(error=>{console.warn(error.message);summaries.statueRegulars.body+='<p class="note">Character sculpture could not load. The game is still available.</p>'})}
 
 })();
