@@ -1,5 +1,9 @@
 # Museum additions queue
 
+## Next museum conversation
+
+User request (26 October 2026): Next time we discuss the Fun Haus museum, ask Keith about adding the Fun Haus Doorway Experiment to the Simulation Lab. Bring this up during that conversation; no scheduled reminder requested. Once asked, update this note so it is not repeated indefinitely.
+
 ## Simulation Lab / Simulations
 
 ### Fun Haus Doorway Experiment
