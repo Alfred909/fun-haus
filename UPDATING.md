@@ -58,3 +58,7 @@ Then prepare the portfolio for employers: review the résumé, add a concise pro
 
 
 The main site address now opens the application portfolio. The walkable museum remains at museum.html. Update résumé changes in both resume.html and the museum’s embedded copies until these are consolidated. The confirmed completed qualification is a master’s degree in Themed Design in Architecture from the University of Florida.
+
+## Night Shift arcade exhibit
+
+The upright cabinet is in the Display Hall, left of The Regulars. Its geometry and interaction live in `docs/museum-games.js`. The playable game is `docs/games/night-shift/index.html`; `title-screen.js` draws the shared cabinet monitor and opening screen. Update its launch URL in `docs/apps.json`. Visitors can also launch it through Games menu, then use Return to arcade cabinet.

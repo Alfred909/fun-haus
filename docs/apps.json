@@ -12,5 +12,12 @@
     "status": "Live web prototype",
     "playUrl": "https://alfred909.github.io/mars-scout/",
     "repositoryUrl": "https://github.com/Alfred909/mars-scout"
+  },
+  {
+    "title": "Night Shift",
+    "creator": "Keith Borgholthaus \u00b7 ChatGPT-assisted prototype",
+    "status": "Playable 2D prototype",
+    "playUrl": "https://alfred909.github.io/fun-haus/games/night-shift/",
+    "repositoryUrl": "https://github.com/Alfred909/fun-haus/tree/main/docs/games/night-shift"
   }
 ]
