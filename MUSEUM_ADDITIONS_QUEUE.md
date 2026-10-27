@@ -2,13 +2,13 @@
 
 ## Next museum conversation
 
-User request (26 October 2026): Next time we discuss the Fun Haus museum, ask Keith about adding the Fun Haus Doorway Experiment to the Simulation Lab. Bring this up during that conversation; no scheduled reminder requested. Once asked, update this note so it is not repeated indefinitely.
+Resolved 27 October 2026: Keith authorized adding and publishing the Doorway Experiment in this update; no repeat reminder needed.
 
 ## Simulation Lab / Simulations
 
 ### Fun Haus Doorway Experiment
 
-- Status: Requested for the next suitable museum update (26 October 2026).
+- Status: Implemented in the 27 October 2026 museum update.
 - Destination: The existing Fun Haus museum's Simulation Lab / Simulations section.
 - Playable prototype: https://fun-haus-doorway-experiment.keithaus.chatgpt.site/
 - Exhibit description: An interactive participation study testing how spatial cues, invitations, and group behavior affect whether people enter and take part.
@@ -17,7 +17,7 @@ User request (26 October 2026): Next time we discuss the Fun Haus museum, ask Ke
 
 ### Goemon Creek Study — recovered top-down model
 
-- Status: Source recovered by Keith on 26 October 2026. Add when credits are renewed.
+- Status: Original source recovered and implemented as a tabletop in the 27 October 2026 museum update.
 - Playable source: https://goemon-creek-study.keithaus.chatgpt.site/
 - Destination: Existing Fun Haus Museum Simulation Lab / Simulations.
 - Format: Top-down tabletop / cocktail arcade exhibit with the simulation displayed on the table screen and a playable launch entry.

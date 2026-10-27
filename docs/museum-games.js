@@ -12,7 +12,7 @@
   const frame=document.getElementById('museum-game-frame');
   let games=[],selected=null;
   const escapeText=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const definitions=[
+  const definitions=[{"id":"goemonCreek","title":"Goemon · Creek Encounter Study","creator":"Simulation Lab / original recovered top-down model","description":"Visitors walk through woods, notice Goemon across the creek, and may pause. Adjust visibility, arrivals, actor presence and the random seed; compare runs and export decisions.","local":"programs/goemon-creek/index.html","room":"Simulation Lab","table":true,"x":7.7},{"id":"doorwayStudy","title":"Fun Haus Doorway Experiment","creator":"Simulation Lab / participation study","description":"Test how an open door, signage, a host and visible participation affect a visitor’s decision to enter. Compare conditions with a crowd run.","local":"programs/doorway/index.html","cabinet":"upright","room":"Simulation Lab","x":10.2,"z":-7.3,"rotation":0,"opening":"programs/doorway/opening.jpg"},{"id":"arcadeGrimwood","title":"Grimwood Funfair","creator":"ArcadeGamesbyAI / original prototype","description":"Explore the haunted funfair in the recovered original browser game.","local":"games/grimwood-funfair/index.html","cabinet":"upright","room":"Display Hall","x":-11.25,"z":-12.8,"rotation":1.5707963267948966,"opening":"games/grimwood-funfair/opening.jpg"},{"id":"arcadeSkyjoust","title":"Skyjoust","creator":"ArcadeGamesbyAI / original prototype","description":"Take flight in the recovered original Skyjoust prototype.","local":"games/skyjoust/index.html","cabinet":"upright","room":"Display Hall","x":-11.25,"z":-10.2,"rotation":1.5707963267948966,"opening":"games/skyjoust/opening.jpg"},{"id":"goemonWalk","title":"Goemon · Branching Walk Study","creator":"Simulation Lab / recovered audio and branching build","description":"Compare baseline and Kabuki routes, encounter sounds and apparitions, and record changes in walking behavior. The original recovered experiment.","local":"programs/goemon-walk/index.html","cabinet":"upright","room":"Simulation Lab","x":4.9,"z":-7.3,"rotation":0,"opening":"programs/goemon-walk/opening.jpg"},
     {id:'arcadeNightShift',title:'Night Shift',creator:'Keith Borgholthaus · ChatGPT-assisted prototype',description:'Run a ghost-catching business: drive through the city, explore haunted buildings, coordinate your crew and upgrade your equipment.',x:-9},
     {id:'movingPool',title:'Moving Pool Intervention',creator:'Simulation Lab / guest behavior',description:'A moving family pool and circular river with finite tubes. Families collect every tube they want before leaving.',local:'programs/moving_pool_intervention_prototype.html',x:7.7},
     {id:'livingPond',title:'Umwelt · The Living Pond',creator:'Simulation Lab / ecology & perception',description:'Observe a living pond, experience an organism’s limited senses, or inhabit a creature. Explore how food, water and predators affect the ecology.',local:'programs/living-pond/index.html',x:7.7},
@@ -24,9 +24,9 @@
     for(const d of definitions){
       const app=games.find(a=>a.title===d.title);
       const available=Boolean(d.local)||d.id==='statuePRGE'||Boolean(app&&validURL(app.playUrl));
-      summaries[d.id]={title:d.title,tag:d.local?'Simulation Lab / cocktail table exhibit':'Display hall / interactive exhibit',body:'<p>'+escapeText(d.description)+'</p><p class="note">'+escapeText(d.creator)+'</p><div class="launch-card"><p>Play this exhibit? Your place in the museum will be kept.</p><button data-play-exhibit="'+d.id+'"'+(available?'':' disabled')+'>'+(available?'Play '+escapeText(d.title)+' ▶':'Game link unavailable')+'</button></div><p class="game-menu-note">The game opens with a return bar. Esc releases the mouse; Museum menu returns to the game list.</p>'};
+      summaries[d.id]={title:d.title,tag:d.cabinet?(d.room+' / upright arcade cabinet'):d.local?'Simulation Lab / cocktail table exhibit':'Display hall / interactive exhibit',body:'<p>'+escapeText(d.description)+'</p><p class="note">'+escapeText(d.creator)+'</p><div class="launch-card"><p>Play this exhibit? Your place in the museum will be kept.</p><button data-play-exhibit="'+d.id+'"'+(available?'':' disabled')+'>'+(available?'Play '+escapeText(d.title)+' ▶':'Game link unavailable')+'</button></div><p class="game-menu-note">The game opens with a return bar. Esc releases the mouse; Museum menu returns to the game list.</p>'};
     }
-    summaries.games={title:'Choose an exhibit',tag:'Fun Haus / games menu',body:'<p>Visit the moving-pool and living-pond tables in the Simulation Lab, or the arcade cabinet and game statues in the Display Hall.</p><div class="game-options">'+definitions.map(d=>'<button data-preview-exhibit="'+d.id+'">'+escapeText(d.title)+'<small>'+escapeText(d.description)+'</small></button>').join('')+'</div><p><button id="visit-game-statues">Visit the Display Hall ↗</button></p><p class="note">Desktop keyboard and mouse recommended. Open in new tab is available if your browser limits a game inside the museum.</p>'};
+    summaries.games={title:'Choose an exhibit',tag:'Fun Haus / games menu',body:'<p>Visit the Goemon creek table, branching walkthrough, Doorway Experiment and simulation tables in the Simulation Lab, or Night Shift, Grimwood Funfair, Skyjoust and the game statues in the Display Hall.</p><div class="game-options">'+definitions.map(d=>'<button data-preview-exhibit="'+d.id+'">'+escapeText(d.title)+'<small>'+escapeText(d.description)+'</small></button>').join('')+'</div><p><button id="visit-game-statues">Visit the Display Hall ↗</button></p><p class="note">Desktop keyboard and mouse recommended. Open in new tab is available if your browser limits a game inside the museum.</p>'};
   }
   function validURL(value){try{const u=new URL(value);return u.protocol==='https:'&&u.origin===location.origin}catch{return false}}
   function showMenu(){keys.clear();showDetail('games')}
@@ -52,7 +52,7 @@
     $('detail').style.display='none';$('welcome').style.display='none';$('prompt').style.display='none';
     if(document.pointerLockElement)document.exitPointerLock();
     document.getElementById('museum-game-title').textContent=d.title;
-    document.getElementById('museum-return-statue').textContent=d.local?'Return to table':id==='arcadeNightShift'?'Return to arcade cabinet':'Return to exhibit';
+    document.getElementById('museum-return-statue').textContent=d.cabinet?'Return to arcade cabinet':d.local?'Return to table':id==='arcadeNightShift'?'Return to arcade cabinet':'Return to exhibit';
     const url=d.local?new URL(d.local,location.href).href:id==='statuePRGE'?new URL('research/index.html',location.href).href:app.playUrl;
     document.getElementById('museum-open-tab').href=url;
     frame.title=d.title+' — playable exhibit';
@@ -82,7 +82,7 @@
   fetch('apps.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw Error();return r.json()}).then(data=>{games=data;populate()}).catch(()=>{
     summaries.games.body+='<p role="alert">Game links could not load. Reload the page to try again. The documentary remains available.</p>';
   });
-  summaries.hall={title:'Display Hall / playable exhibits',tag:'03 / playable exhibits',body:'<p>Each display opens an interactive exhibit. Aim at it and click, or walk close and press E.</p><p>The Night Shift stand-up arcade cabinet sits against the back wall at the left end of the hall, with its controls facing into the room. The Regulars, Mars Scout and Beyond the Building occupy the three plinths.</p><button onclick="showMuseumGames()">Open Games menu</button>'};
+  summaries.hall={title:'Display Hall / playable exhibits',tag:'03 / playable exhibits',body:'<p>Each display opens an interactive exhibit. Aim at it and click, or walk close and press E.</p><p>Night Shift remains against the back wall. Grimwood Funfair and Skyjoust extend the arcade area along the left wall, with controls facing into the gallery. The Regulars, Mars Scout and Beyond the Building occupy the three plinths.</p><button onclick="showMuseumGames()">Open Games menu</button>'};
 
 function exhibitMesh(id,geometry,material,x,y,z){const mesh=new THREE.Mesh(geometry,material);mesh.position.set(x,y+.7,z-12);mesh.userData.subject=id;scene.add(mesh);return mesh}
 function replacePlaceholder(id){for(const mesh of [...scene.children])if(mesh.userData.subject===id&&mesh.position.y===1.4){scene.remove(mesh);mesh.geometry.dispose();mesh.material.dispose()}}
@@ -201,6 +201,62 @@ function installPlayroomPoster(){
  summaries[id]={title:'From Painting to Playroom',tag:'Design Office / process exhibit',body:'<img class="project-image" src="projects/playroom/assets/04-photo-concept.webp" alt="Merged indoor playground concept"><p>Three painted playground views became one imagined building. Follow the Marble reconstruction, the CAD attempts, what failed, and what the next version needs.</p><p><a href="projects/playroom/index.html">Open the full case study ↗</a></p>'};
 }
 
-if(ready){installMovingPool();installLivingPond();installPlayroomPoster();const titleScript=document.createElement('script');titleScript.src='games/night-shift/title-screen.js';titleScript.onload=installNightShiftArcade;titleScript.onerror=()=>console.warn('Night Shift cabinet artwork could not load; use Games menu to play.');document.head.append(titleScript);installTent();installConventionHall();installYaki().catch(error=>{console.warn(error.message);summaries.statueRegulars.body+='<p class="note">Character sculpture could not load. The game is still available.</p>'})}
+function installRecoveredArcade(d){
+ // Upright cabinets sit against the back wall, facing the gallery (+Z).
+ const {id,x:cx,z:cz}=d; const group=new THREE.Group();group.position.set(cx,0,cz);group.rotation.y=d.rotation;scene.add(group);
+ const dark=new THREE.MeshStandardMaterial({color:'#14282c',roughness:.55,metalness:.18});
+ const trim=new THREE.MeshStandardMaterial({color:'#72b790',roughness:.4,metalness:.2});
+ const black=new THREE.MeshStandardMaterial({color:'#090f15',roughness:.65});
+ function mesh(geo,mat,x,y,z){const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);m.userData.subject=id;group.add(m);return m}
+ const block=(w,h,d,x,y,z,mat)=>mesh(new THREE.BoxGeometry(w,h,d),mat,x,y,z);
+ // Upright silhouette: kick panel, projecting control deck, recessed monitor, marquee hood.
+ const profile=new THREE.Shape();
+ [[-.55,0],[.61,0],[.61,.84],[.78,1.02],[.78,1.20],[.43,1.31],[.13,2.08],[.52,2.12],[.52,2.49],[-.55,2.49]].forEach(([z,y],i)=>i?profile.lineTo(z,y):profile.moveTo(z,y));profile.closePath();
+ for(const side of [-1,1]){const g=new THREE.ExtrudeGeometry(profile,{depth:.085,bevelEnabled:false});g.rotateY(-Math.PI/2);mesh(g,trim,side*.72+(side>0?.085:0),0,0)}
+ block(1.45,.86,1.08,0,.43,0,dark);block(1.44,1.58,.12,0,1.64,-.49,dark);
+ block(1.45,.18,1.30,0,1.13,.08,dark);block(1.45,.35,.98,0,2.30,-.01,dark);
+ const bezel=block(1.39,.92,.13,0,1.70,.26,black);bezel.rotation.x=-.22;
+ const screenCanvas=document.createElement('canvas');screenCanvas.width=960;screenCanvas.height=640;const g=screenCanvas.getContext('2d');g.fillStyle='#14282c';g.fillRect(0,0,960,640);
+ const screenTexture=new THREE.CanvasTexture(screenCanvas);screenTexture.colorSpace=THREE.SRGBColorSpace;
+ const screen=mesh(new THREE.PlaneGeometry(1.23,.82),new THREE.MeshBasicMaterial({map:screenTexture,toneMapped:false}),0,1.70,.335);screen.rotation.x=-.22;new THREE.TextureLoader().load(d.opening,t=>{t.colorSpace=THREE.SRGBColorSpace;screen.material.map=t;screen.material.needsUpdate=true});
+ const marquee=texture((g,w,h)=>{g.fillStyle='#091e24';g.fillRect(0,0,w,h);g.fillStyle='#c1ffce';g.textAlign='center';g.font='bold 88px sans-serif';g.fillText(d.title.toUpperCase(),w/2,110,w-60);g.font='23px sans-serif';g.fillStyle='#dfd6ac';g.fillText('ORIGINAL PROTOTYPE / FREE PLAY',w/2,163)},1024,200);
+ mesh(new THREE.PlaneGeometry(1.39,.27),new THREE.MeshBasicMaterial({map:marquee,toneMapped:false}),0,2.30,.49);
+ block(1.41,.025,.045,0,2.12,.51,new THREE.MeshBasicMaterial({color:'#bdf4c7',toneMapped:false}));
+ // Two clearly visible player stations: joystick shafts and colored push buttons.
+ for(const [x,color]of [[-.40,'#ffce83'],[.29,'#86d9f4']]){
+   mesh(new THREE.CylinderGeometry(.025,.025,.16,10),black,x,1.29,.41);
+   mesh(new THREE.SphereGeometry(.065,16,12),new THREE.MeshStandardMaterial({color,roughness:.3}),x,1.39,.41);
+   for(const offset of [.12,.25])mesh(new THREE.CylinderGeometry(.045,.045,.035,16),new THREE.MeshStandardMaterial({color,roughness:.3}),x+offset,1.235,.42);
+ }
+ block(.38,.35,.025,0,.54,.55,black);block(.13,.035,.03,0,.60,.57,trim);
+ const badge=texture((g,w,h)=>{g.fillStyle='#132a2f';g.fillRect(0,0,w,h);g.fillStyle='#bdf4c7';g.textAlign='center';g.font='bold 40px sans-serif';g.fillText('FREE PLAY',w/2,65);g.font='22px sans-serif';g.fillText('AIM + CLICK / PRESS E',w/2,112)},512,150);
+ mesh(new THREE.PlaneGeometry(.95,.28),new THREE.MeshBasicMaterial({map:badge}),0,.88,.623);
+ const sideways=d.rotation===Math.PI/2;walls.push(sideways?{minX:cx-.56,maxX:cx+.79,minZ:cz-.81,maxZ:cz+.81}:{minX:cx-.81,maxX:cx+.81,minZ:cz-.56,maxZ:cz+.79});
+ // Bake the cabinet transform into each mesh for the museum's existing raycaster.
+ group.updateMatrixWorld(true);for(const part of [...group.children]){part.applyMatrix4(group.matrixWorld);scene.add(part)}scene.remove(group);
+ targets.push({id,label:d.title+' · play arcade cabinet',x:cx+Math.sin(d.rotation)*1.05,z:cz+Math.cos(d.rotation)*1.05});
+}
+
+function installGoemonCreek(){
+ const id='goemonCreek',cx=7.7,cz=4;
+ // Match the moving-pool cocktail table, with a clear aisle between the two exhibits.
+ const part=(w,h,d,x,y,z,color)=>{const m=box(w,h,d,cx+x,y,cz+z,color);m.userData.subject=id;return m};
+ part(2.7,.76,1.7,0,.48,0,'#526c66');
+ for(const x of [-1.05,1.05])for(const z of [-.6,.6])part(.12,.2,.12,x,.1,z,'#324656');
+ part(3.05,.12,2.05,0,.94,0,'#806348');part(2.83,.04,1.83,0,1.02,0,'#263d37');
+ const screen=new THREE.Mesh(new THREE.PlaneGeometry(2.6,1.625),new THREE.MeshBasicMaterial({color:'#ffffff',toneMapped:false}));
+ screen.rotation.x=-Math.PI/2;screen.position.set(cx,1.047,cz);screen.userData.subject=id;scene.add(screen);
+ new THREE.TextureLoader().load('programs/goemon-creek/opening.jpg',t=>{t.colorSpace=THREE.SRGBColorSpace;screen.material.map=t;screen.material.needsUpdate=true});
+ for(const z of [-1.15,1.15]){part(1.15,.08,.24,0,.88,z,'#324656');for(const [x,color] of [[-.25,'#92d96d'],[.15,'#64dfcf']]){const b=new THREE.Mesh(new THREE.CylinderGeometry(.045,.045,.025,16),new THREE.MeshBasicMaterial({color}));b.position.set(cx+x,.935,cz+z);b.userData.subject=id;scene.add(b)}}
+ sign('GOEMON / CREEK ENCOUNTER',cx,.57,cz+.861,0,2.45,.28);
+ sign('NOTICE / PAUSE / COMPARE',cx,.57,cz-.861,Math.PI,2.45,.28);
+ // Include the projecting controls so visitors cannot walk through the cabinet.
+ walls.push({minX:cx-1.525,maxX:cx+1.525,minZ:cz-1.27,maxZ:cz+1.27});
+ targets.push({id,x:cx,z:cz+1.6,label:'Goemon · play the creek encounter model'});
+ targets.push({id,x:cx,z:cz-1.6,label:'Umwelt · play the living ecology table'});
+ summaries.lab.body+='<p><button data-preview-exhibit="goemonCreek">Goemon · creek encounter cocktail table ↗</button></p>';
+}
+
+if(ready){installGoemonCreek();summaries.lab.body+='<p><button data-preview-exhibit="doorwayStudy">Fun Haus Doorway Experiment ↗</button></p>';definitions.filter(d=>d.cabinet).forEach(installRecoveredArcade);summaries.lab.body+='<p><button data-preview-exhibit="goemonWalk">Goemon · Branching Walk Study ↗</button></p>';installMovingPool();installLivingPond();installPlayroomPoster();const titleScript=document.createElement('script');titleScript.src='games/night-shift/title-screen.js';titleScript.onload=installNightShiftArcade;titleScript.onerror=()=>console.warn('Night Shift cabinet artwork could not load; use Games menu to play.');document.head.append(titleScript);installTent();installConventionHall();installYaki().catch(error=>{console.warn(error.message);summaries.statueRegulars.body+='<p class="note">Character sculpture could not load. The game is still available.</p>'})}
 
 })();
