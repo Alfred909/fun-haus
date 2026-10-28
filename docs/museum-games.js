@@ -12,7 +12,7 @@
   const frame=document.getElementById('museum-game-frame');
   let games=[],selected=null;
   const escapeText=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const definitions=[{"id":"goemonCreek","title":"Goemon · Creek Encounter Study","creator":"Simulation Lab / original recovered top-down model","description":"Visitors walk through woods, notice Goemon across the creek, and may pause. Adjust visibility, arrivals, actor presence and the random seed; compare runs and export decisions.","local":"programs/goemon-creek/index.html","room":"Simulation Lab","table":true,"x":7.7},{"id":"doorwayStudy","title":"Fun Haus Doorway Experiment","creator":"Simulation Lab / participation study","description":"Test how an open door, signage, a host and visible participation affect a visitor’s decision to enter. Compare conditions with a crowd run.","local":"programs/doorway/index.html","cabinet":"upright","room":"Simulation Lab","x":10.2,"z":-7.3,"rotation":0,"opening":"programs/doorway/opening.jpg"},{"id":"arcadeGrimwood","title":"Grimwood Funfair","creator":"ArcadeGamesbyAI / original prototype","description":"Explore the haunted funfair in the recovered original browser game.","local":"games/grimwood-funfair/index.html","cabinet":"upright","room":"Display Hall","x":-11.25,"z":-12.8,"rotation":1.5707963267948966,"opening":"games/grimwood-funfair/opening.jpg"},{"id":"arcadeSkyjoust","title":"Skyjoust","creator":"ArcadeGamesbyAI / original prototype","description":"Take flight in the recovered original Skyjoust prototype.","local":"games/skyjoust/index.html","cabinet":"upright","room":"Display Hall","x":-11.25,"z":-10.2,"rotation":1.5707963267948966,"opening":"games/skyjoust/opening.jpg"},{"id":"goemonWalk","title":"Goemon · Branching Walk Study","creator":"Simulation Lab / recovered audio and branching build","description":"Compare baseline and Kabuki routes, encounter sounds and apparitions, and record changes in walking behavior. The original recovered experiment.","local":"programs/goemon-walk/index.html","cabinet":"upright","room":"Simulation Lab","x":4.9,"z":-7.3,"rotation":0,"opening":"programs/goemon-walk/opening.jpg"},
+  const definitions=[{"id":"goemonCreek","title":"Goemon · Creek Encounter Study","creator":"Simulation Lab / original recovered top-down model","description":"Visitors walk through woods, notice Goemon across the creek, and may pause. Adjust visibility, arrivals, actor presence and the random seed; compare runs and export decisions.","local":"programs/goemon-creek/index.html","room":"Simulation Lab","table":true,"x":7.7},{"id":"doorwayStudy","title":"Fun Haus Doorway Experiment","creator":"Simulation Lab / participation study","description":"Test how an open door, signage, a host and visible participation affect a visitor’s decision to enter. Compare conditions with a crowd run.","local":"programs/doorway/index.html","cabinet":"upright","room":"Simulation Lab","x":10.2,"z":-7.3,"rotation":0,"opening":"programs/doorway/opening.jpg"},{"id":"arcadeGrimwood","title":"Grimwood Funfair","creator":"ArcadeGamesbyAI / original prototype","description":"Explore the haunted funfair in the recovered original browser game.","local":"games/grimwood-funfair/index.html","cabinet":"upright","room":"Display Hall","x":-11.25,"z":-12.8,"rotation":1.5707963267948966,"opening":"games/grimwood-funfair/opening.jpg"},{"id":"arcadeSkyjoust","title":"Skyjoust","creator":"ArcadeGamesbyAI / original prototype","description":"Take flight in Skyjoust v5: three mounts, shield bash, boss waves and expanded flight controls.","local":"games/skyjoust/index.html","cabinet":"upright","room":"Display Hall","x":-11.25,"z":-10.2,"rotation":1.5707963267948966,"opening":"games/skyjoust/opening.jpg"},{"id":"goemonWalk","title":"Goemon · Branching Walk Study","creator":"Simulation Lab / recovered audio and branching build","description":"Compare baseline and Kabuki routes, encounter sounds and apparitions, and record changes in walking behavior. The original recovered experiment.","local":"programs/goemon-walk/index.html","cabinet":"upright","room":"Simulation Lab","x":4.9,"z":-7.3,"rotation":0,"opening":"programs/goemon-walk/opening.jpg"},
     {id:'arcadeNightShift',title:'Night Shift',creator:'Keith Borgholthaus · ChatGPT-assisted prototype',description:'Run a ghost-catching business: drive through the city, explore haunted buildings, coordinate your crew and upgrade your equipment.',x:-9},
     {id:'movingPool',title:'Moving Pool Intervention',creator:'Simulation Lab / guest behavior',description:'A moving family pool and circular river with finite tubes. Families collect every tube they want before leaving.',local:'programs/moving_pool_intervention_prototype.html',x:7.7},
     {id:'livingPond',title:'Umwelt · The Living Pond',creator:'Simulation Lab / ecology & perception',description:'Observe a living pond, experience an organism’s limited senses, or inhabit a creature. Explore how food, water and predators affect the ecology.',local:'programs/living-pond/index.html',x:7.7},
@@ -20,8 +20,13 @@
     {id:'statueMars',title:'Mars Scout',creator:'Gemini',description:'Build a Mars outpost and manage shelter, oxygen and supplies.',x:0},
     {id:'statuePRGE',title:'Beyond the Building',creator:'Convention research',description:'Explore the full convention research website: maps, photographs, evidence, and the PRGE documentary.',x:6}
   ];
+  definitions.push({id:'directMatter',title:'Direct Matter Manipulation Simulator',creator:'Simulation Lab / concept development',description:'Coming Soon · Planned interactive and scientific modes for exploring simulated material behavior, controlled trials and intended metrics.',comingSoon:true,room:'Simulation Lab'});
   function populate(){
     for(const d of definitions){
+      if(d.comingSoon){
+        summaries[d.id]={title:d.title,tag:'Simulation Lab / Coming Soon',body:'<p><strong>Coming Soon</strong></p><p>'+escapeText(d.description)+'</p><h3>Interactive mode · planned</h3><p>Manipulate simulated matter with immediate feedback and guided challenges.</p><h3>Scientific mode · planned</h3><p>Compare controlled, repeatable trials with documented assumptions and data export.</p><h3>Research &amp; intended metrics</h3><p>Explore control and understanding through task success, completion time, target error, learning, material response, numerical reliability and input latency. Model details and the study protocol remain to be established; no experimental results are available.</p><p><a href="programs/direct-matter/index.html">Read the research overview and measurement plan ↗</a></p><p class="note">Concept development · no playable simulator or launch date yet.</p>'};
+        continue;
+      }
       const app=games.find(a=>a.title===d.title);
       const available=Boolean(d.local)||d.id==='statuePRGE'||Boolean(app&&validURL(app.playUrl));
       summaries[d.id]={title:d.title,tag:d.cabinet?(d.room+' / upright arcade cabinet'):d.local?'Simulation Lab / cocktail table exhibit':'Display hall / interactive exhibit',body:'<p>'+escapeText(d.description)+'</p><p class="note">'+escapeText(d.creator)+'</p><div class="launch-card"><p>Play this exhibit? Your place in the museum will be kept.</p><button data-play-exhibit="'+d.id+'"'+(available?'':' disabled')+'>'+(available?'Play '+escapeText(d.title)+' ▶':'Game link unavailable')+'</button></div><p class="game-menu-note">The game opens with a return bar. Esc releases the mouse; Museum menu returns to the game list.</p>'};
@@ -45,7 +50,7 @@
     }
   });
   function startExhibit(id){
-    const d=definitions.find(x=>x.id===id);if(!d)return;
+    const d=definitions.find(x=>x.id===id);if(!d||d.comingSoon)return;
     const app=games.find(a=>a.title===d.title);
     if(!d.local&&id!=='statuePRGE'&&(!app||!validURL(app.playUrl)))return;
     selected=d;programOpen=true;keys.clear();
@@ -237,6 +242,19 @@ function installRecoveredArcade(d){
  targets.push({id,label:d.title+' · play arcade cabinet',x:cx+Math.sin(d.rotation)*1.05,z:cz+Math.cos(d.rotation)*1.05});
 }
 
+function installDirectMatterPoster(){
+ const id='directMatter',x=3.73,y=1.95,z=-2;
+ const art=texture((g,w,h)=>{
+   g.fillStyle='#142c30';g.fillRect(0,0,w,h);g.fillStyle='#edc783';g.font='bold 48px sans-serif';g.fillText('COMING SOON',48,86);
+   g.fillStyle='#f2eddd';g.font='bold 54px sans-serif';g.fillText('DIRECT MATTER',48,174);g.fillText('MANIPULATION',48,239);g.fillText('SIMULATOR',48,304);
+   g.strokeStyle='#a9e5d4';g.lineWidth=4;for(let i=0;i<7;i++){g.beginPath();g.arc(170+i*105,435,28+i*4,0,Math.PI*2);g.stroke()}
+   g.fillStyle='#a9e5d4';g.font='28px sans-serif';g.fillText('INTERACTIVE / SCIENTIFIC',48,565);g.font='24px sans-serif';g.fillText('PLANNED MODES · RESEARCH · METRICS',48,622);g.fillText('AIM + CLICK / E TO READ',48,700);
+ },1024,768);
+ const backing=box(.12,2.1,2.85,x,y,z,'#324656');backing.userData.subject=id;
+ const poster=new THREE.Mesh(new THREE.PlaneGeometry(2.65,1.9),new THREE.MeshBasicMaterial({map:art,toneMapped:false}));poster.position.set(x+.065,y,z);poster.rotation.y=Math.PI/2;poster.userData.subject=id;scene.add(poster);
+ targets.push({id,x:4.8,z,label:'Direct Matter Manipulation · Coming Soon'});
+ summaries.lab.body+='<p><button data-preview-exhibit="directMatter">Coming Soon · Direct Matter Manipulation Simulator ↗</button></p>';
+}
 function installGoemonCreek(){
  const id='goemonCreek',cx=7.7,cz=4;
  // Match the moving-pool cocktail table, with a clear aisle between the two exhibits.
@@ -257,6 +275,6 @@ function installGoemonCreek(){
  summaries.lab.body+='<p><button data-preview-exhibit="goemonCreek">Goemon · creek encounter cocktail table ↗</button></p>';
 }
 
-if(ready){installGoemonCreek();summaries.lab.body+='<p><button data-preview-exhibit="doorwayStudy">Fun Haus Doorway Experiment ↗</button></p>';definitions.filter(d=>d.cabinet).forEach(installRecoveredArcade);summaries.lab.body+='<p><button data-preview-exhibit="goemonWalk">Goemon · Branching Walk Study ↗</button></p>';installMovingPool();installLivingPond();installPlayroomPoster();const titleScript=document.createElement('script');titleScript.src='games/night-shift/title-screen.js';titleScript.onload=installNightShiftArcade;titleScript.onerror=()=>console.warn('Night Shift cabinet artwork could not load; use Games menu to play.');document.head.append(titleScript);installTent();installConventionHall();installYaki().catch(error=>{console.warn(error.message);summaries.statueRegulars.body+='<p class="note">Character sculpture could not load. The game is still available.</p>'})}
+if(ready){installDirectMatterPoster();installGoemonCreek();summaries.lab.body+='<p><button data-preview-exhibit="doorwayStudy">Fun Haus Doorway Experiment ↗</button></p>';definitions.filter(d=>d.cabinet).forEach(installRecoveredArcade);summaries.lab.body+='<p><button data-preview-exhibit="goemonWalk">Goemon · Branching Walk Study ↗</button></p>';installMovingPool();installLivingPond();installPlayroomPoster();const titleScript=document.createElement('script');titleScript.src='games/night-shift/title-screen.js';titleScript.onload=installNightShiftArcade;titleScript.onerror=()=>console.warn('Night Shift cabinet artwork could not load; use Games menu to play.');document.head.append(titleScript);installTent();installConventionHall();installYaki().catch(error=>{console.warn(error.message);summaries.statueRegulars.body+='<p class="note">Character sculpture could not load. The game is still available.</p>'})}
 
 })();
