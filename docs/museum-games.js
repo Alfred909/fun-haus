@@ -187,6 +187,22 @@ function installLivingPond(){
  summaries.lab.body+='<p><button data-preview-exhibit="livingPond">Umwelt · living ecology cocktail table ↗</button></p>';
 }
 
+function installMarsColonyPoster(){
+ const id='marsColony',x=-11.72,y=1.9,z=6.1;
+ // Free west-wall section in Design: register at z=2, playroom at z=-4.25.
+ // The frame projects only 0.14 m; no floor footprint or arcade positions change.
+ const backing=box(.14,2.03,3.52,x,y,z,'#263d37');backing.userData.subject=id;
+ const art=new THREE.TextureLoader().load('projects/mars-colony/assets/mars-colony-promotional.png',undefined,undefined,()=>console.warn('Mars Colony artwork could not load; the project remains available from Design notes.'));
+ art.colorSpace=THREE.SRGBColorSpace;
+ const poster=new THREE.Mesh(new THREE.PlaneGeometry(3.3,3.3*941/1672),new THREE.MeshBasicMaterial({map:art,toneMapped:false}));
+ poster.position.set(x+.075,y,z);poster.rotation.y=Math.PI/2;poster.userData.subject=id;scene.add(poster);exhibits.push(poster);
+ sign('MARS COLONY / THE FIRST CREW',x+.09,3.04,z,Math.PI/2,3.35,.28);
+ targets.push({id,x:-10.45,z,label:'Mars Colony: The First Crew · read the project'});
+ summaries[id]={title:'Mars Colony: The First Crew',tag:'Design Office / immersive experience concept',body:'<a href="projects/mars-colony/index.html"><img class="project-image" src="projects/mars-colony/assets/mars-colony-promotional.png" alt="Mars colony promotional concept showing astronauts, rovers and habitats on Mars"></a><p>Play the game. Suit up. Enter the Colony Machine. A five-person crew works together to establish a simulated Mars outpost.</p><p><a href="projects/mars-colony/index.html">Explore the visitor journey, mission roles, technical design and learning goals ↗</a></p><p class="note">In design · proposed attraction and research plan.</p>'};
+ summaries.office.body+='<p><button data-preview-exhibit="marsColony">Mars Colony: The First Crew · experience design ↗</button></p>';
+ summaries.board.body+='<p><button data-preview-exhibit="marsColony">Design Office · Mars Colony: The First Crew ↗</button></p>';
+}
+
 function installPlayroomPoster(){
  const id='playroomStory',x=-11.72,y=1.9,z=-4.25;
  const art=texture((g,w,h)=>{
@@ -275,6 +291,6 @@ function installGoemonCreek(){
  summaries.lab.body+='<p><button data-preview-exhibit="goemonCreek">Goemon · creek encounter cocktail table ↗</button></p>';
 }
 
-if(ready){installDirectMatterPoster();installGoemonCreek();summaries.lab.body+='<p><button data-preview-exhibit="doorwayStudy">Fun Haus Doorway Experiment ↗</button></p>';definitions.filter(d=>d.cabinet).forEach(installRecoveredArcade);summaries.lab.body+='<p><button data-preview-exhibit="goemonWalk">Goemon · Branching Walk Study ↗</button></p>';installMovingPool();installLivingPond();installPlayroomPoster();const titleScript=document.createElement('script');titleScript.src='games/night-shift/title-screen.js';titleScript.onload=installNightShiftArcade;titleScript.onerror=()=>console.warn('Night Shift cabinet artwork could not load; use Games menu to play.');document.head.append(titleScript);installTent();installConventionHall();installYaki().catch(error=>{console.warn(error.message);summaries.statueRegulars.body+='<p class="note">Character sculpture could not load. The game is still available.</p>'})}
+if(ready){installMarsColonyPoster();installDirectMatterPoster();installGoemonCreek();summaries.lab.body+='<p><button data-preview-exhibit="doorwayStudy">Fun Haus Doorway Experiment ↗</button></p>';definitions.filter(d=>d.cabinet).forEach(installRecoveredArcade);summaries.lab.body+='<p><button data-preview-exhibit="goemonWalk">Goemon · Branching Walk Study ↗</button></p>';installMovingPool();installLivingPond();installPlayroomPoster();const titleScript=document.createElement('script');titleScript.src='games/night-shift/title-screen.js';titleScript.onload=installNightShiftArcade;titleScript.onerror=()=>console.warn('Night Shift cabinet artwork could not load; use Games menu to play.');document.head.append(titleScript);installTent();installConventionHall();installYaki().catch(error=>{console.warn(error.message);summaries.statueRegulars.body+='<p class="note">Character sculpture could not load. The game is still available.</p>'})}
 
 })();
